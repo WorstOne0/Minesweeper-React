@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { click, setFlagCounter } from "../../store/gameState";
+import { click, setFlag } from "../../store/gameState";
 
 import { FaBomb, FaFlag } from "react-icons/fa";
 
@@ -10,31 +10,28 @@ const Cell = ({ width = "12.5%", square, row, column }) => {
   const dispatch = useDispatch();
   const { gameOver } = useSelector((state) => state.gameState);
 
-  const [flag, setFlag] = useState(false);
-
   const handleClick = () => {
-    if (!flag) dispatch(click({ row, column }));
+    dispatch(click({ row, column }));
   };
 
   const handleContextMenu = (event) => {
     event.preventDefault();
 
-    dispatch(setFlagCounter({ flag: !flag }));
-    setFlag(!flag);
+    dispatch(setFlag({ row, column }));
   };
 
   const control = { background: "", hover: "", shadow: false, display: "none" };
 
-  if (square === "E") {
+  if (square.type === "E") {
     control.display = "none";
     control.background = "var(--color-primary)";
     control.hover = "#327fe2";
-  } else if (square === "B") {
+  } else if (square.type === "B") {
     control.display = "none";
     control.background = "var(--color-dark)";
     control.hover = control.background;
     control.shadow = true;
-  } else if (square === "M") {
+  } else if (square.type === "M") {
     gameOver ? (control.display = "flex") : (control.display = "none");
     gameOver
       ? (control.background = "#e63946")
@@ -56,9 +53,11 @@ const Cell = ({ width = "12.5%", square, row, column }) => {
       onClick={() => handleClick()}
       onContextMenu={(event) => handleContextMenu(event)}
     >
-      {flag && square !== "B" && !gameOver && <FaFlag className="Flag" />}
+      {square.flag && square.type !== "B" && !gameOver && (
+        <FaFlag className="Flag" />
+      )}
       <S.Content display={control.display}>
-        {square === "M" ? gameOver && <FaBomb /> : square}
+        {square.type === "M" ? gameOver && <FaBomb /> : square.type}
       </S.Content>
     </S.Container>
   );

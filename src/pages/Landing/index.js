@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { restart } from "../../store/gameState";
 
 import { Board } from "../../components";
 
@@ -10,14 +11,21 @@ import { BsArrowClockwise } from "react-icons/bs";
 import * as S from "./styles";
 
 const Landing = () => {
+  const dispatch = useDispatch();
+
   const [timer, setTimer] = useState(0);
   const { flagCounter, firstClick } = useSelector((state) => state.gameState);
 
   useEffect(() => {
+    let interval = null;
+
     if (firstClick) {
-      setTimeout(() => {
-        setTimer(timer + 1);
+      interval = setTimeout(() => {
+        setTimer((prev) => prev + 1);
       }, [1000]);
+    } else {
+      setTimer(0);
+      clearInterval(interval);
     }
   }, [timer, firstClick]);
 
@@ -28,6 +36,10 @@ const Landing = () => {
     return `${minutes < 10 ? "0" + minutes : minutes}:${
       seconds < 10 ? "0" + seconds : seconds
     }`;
+  };
+
+  const handleRestart = () => {
+    dispatch(restart());
   };
 
   return (
@@ -55,7 +67,7 @@ const Landing = () => {
           </S.Content>
         </S.SideBarDivision>
         <S.SideBarDivision>
-          <S.Content hover={true}>
+          <S.Content hover={true} onClick={() => handleRestart()}>
             <BsArrowClockwise className="Icon" />
             Retry
           </S.Content>
