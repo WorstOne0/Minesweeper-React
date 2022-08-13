@@ -26,7 +26,15 @@ const createBoard = (rows, columns) => {
   return board;
 };
 
-const handleClick = (board, row, column, rowNumber, columnNumber) => {
+const handleClick = (
+  board,
+  row,
+  column,
+  rowNumber,
+  columnNumber,
+  gameOver,
+  youWin
+) => {
   const rowIndex = [-1, -1, -1, 0, 0, 0, 1, 1, 1];
   const columnIndex = [-1, 0, 1, -1, 0, 1, -1, 0, 1];
 
@@ -69,8 +77,10 @@ const handleClick = (board, row, column, rowNumber, columnNumber) => {
   }
 
   if (checkWin(board, rowNumber, columnNumber)) {
-    console.log("You win!");
+    return { gameOver: false, youWin: true };
   }
+
+  return { gameOver: false, youWin: false };
 };
 
 const handleNumberClick = (board, row, column, rowNumber, columnNumber) => {
@@ -111,16 +121,16 @@ const handleNumberClick = (board, row, column, rowNumber, columnNumber) => {
           board[newRow][newColumn].type === "M" &&
           board[newRow][newColumn].flag === false
         )
-          return true;
+          return { gameOver: true, youWin: false };
       }
     }
   }
 
   if (checkWin(board, rowNumber, columnNumber)) {
-    console.log("You win!");
+    return { gameOver: true, youWin: true };
   }
 
-  return false;
+  return { gameOver: false, youWin: false };
 };
 
 const checkWin = (board, rowNumber, columnNumber) => {

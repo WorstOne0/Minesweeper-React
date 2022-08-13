@@ -11,11 +11,20 @@ import { BsArrowClockwise } from "react-icons/bs";
 import * as S from "./styles";
 
 const Landing = () => {
+  // Redux Toolkit
   const dispatch = useDispatch();
 
+  // Timer
   const [timer, setTimer] = useState(0);
-  const { flagCounter, firstClick } = useSelector((state) => state.gameState);
+  // Modal
+  const [isModalOpen, setModal] = useState(false);
 
+  // Redux - Game State
+  const { flagCounter, firstClick, gameOver, youWin } = useSelector(
+    (state) => state.gameState
+  );
+
+  // useEffect - Timer
   useEffect(() => {
     let interval = null;
 
@@ -29,6 +38,12 @@ const Landing = () => {
     }
   }, [timer, firstClick]);
 
+  // useEffect - Game Over
+  useEffect(() => {
+    if (gameOver) setModal(true);
+  }, [gameOver]);
+
+  // Convert seconds to "00:00" format
   const convertSeconds = (fullSeconds) => {
     var minutes = Math.floor((fullSeconds % 3600) / 60);
     var seconds = Math.floor((fullSeconds % 3600) % 60);
@@ -38,15 +53,40 @@ const Landing = () => {
     }`;
   };
 
+  // Restart Game
   const handleRestart = () => {
     dispatch(restart());
   };
 
+  // Open/Closes Modal
+  const handleModal = () => {
+    setModal(false);
+  };
+
   return (
     <S.Container>
+      {isModalOpen && (
+        <S.GameModal onClick={() => handleModal()}>
+          <S.GameDisplay>
+            {youWin ? (
+              <>
+                <S.GameTitle>You Won !!</S.GameTitle>
+                <S.GameSubTitle>Click anywhere to exit</S.GameSubTitle>
+              </>
+            ) : (
+              <>
+                <S.GameTitle>You Lost !! Better Luck Next Time</S.GameTitle>
+                <S.GameSubTitle>Click anywhere to exit</S.GameSubTitle>
+              </>
+            )}
+          </S.GameDisplay>
+        </S.GameModal>
+      )}
+
       <S.SideBar>
         <S.SideBarHeader>
-          <S.Title>Minesweeper</S.Title> <AiFillSetting className="Icon" />
+          <S.Title>Minesweeper</S.Title>
+          <AiFillSetting className="Icon" />
         </S.SideBarHeader>
         <S.SideBarDivision>
           <S.Title>

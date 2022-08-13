@@ -20,7 +20,13 @@ const Cell = ({ width = "12.5%", square, row, column }) => {
     dispatch(setFlag({ row, column }));
   };
 
-  const control = { background: "", hover: "", shadow: false, display: "none" };
+  const control = {
+    background: "",
+    hover: "",
+    shadow: false,
+    display: "none",
+    color: "var(--color-primary)",
+  };
 
   if (square.type === "E") {
     control.display = "none";
@@ -42,6 +48,31 @@ const Cell = ({ width = "12.5%", square, row, column }) => {
     control.background = "var(--color-dark)";
     control.hover = control.background;
     control.shadow = true;
+
+    if (square.type === 1) {
+      control.color = "#1053E4";
+    }
+    if (square.type === 2) {
+      control.color = "#5ECE4F";
+    }
+    if (square.type === 3) {
+      control.color = "#E03616";
+    }
+    if (square.type === 4) {
+      control.color = "#682D63";
+    }
+    if (square.type === 5) {
+      control.color = "#AF9164 ";
+    }
+    if (square.type === 6) {
+      control.color = "#A14EBF";
+    }
+    if (square.type === 7) {
+      control.color = "#353531";
+    }
+    if (square.type === 8) {
+      control.color = "#121212";
+    }
   }
 
   return (
@@ -56,7 +87,7 @@ const Cell = ({ width = "12.5%", square, row, column }) => {
       {square.flag && square.type !== "B" && !gameOver && (
         <FaFlag className="Flag" />
       )}
-      <S.Content display={control.display}>
+      <S.Content display={control.display} color={control.color}>
         {square.type === "M" ? gameOver && <FaBomb /> : square.type}
       </S.Content>
     </S.Container>

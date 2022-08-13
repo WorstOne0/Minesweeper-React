@@ -26,6 +26,7 @@ const initialState = {
   flagCounter: 40,
 
   gameOver: false,
+  youWin: false,
 
   firstClick: false,
 };
@@ -38,36 +39,50 @@ export const gameState = createSlice({
     click: (state, action) => {
       const { row, column } = action.payload;
 
+      // Click a flagged cell
       if (state.board[row][column].flag) return;
 
+      // Click an empty cell
       if (state.board[row][column].type === "B") return;
 
+      // Click a mine
       if (state.board[row][column].type === "M") {
         state.gameOver = true;
         return;
       }
 
+      // Click a non-open cell
       if (state.board[row][column].type === "E") {
         if (!state.firstClick) state.firstClick = true;
 
-        handleClick(
+        const { gameOver, youWin } = handleClick(
           state.board,
           row,
           column,
           state.rowNumber,
-          state.columnNumber
+          state.columnNumber,
+          state.gameOver,
+          state.youWin
         );
+
+        state.gameOver = gameOver;
+        state.youWin = youWin;
 
         return;
       }
 
-      state.gameOver = handleNumberClick(
+      const { gameOver, youWin } = handleNumberClick(
         state.board,
         row,
         column,
         state.rowNumber,
-        state.columnNumber
+        state.columnNumber,
+        state.gameOver,
+        state.youWin
       );
+
+      state.gameOver = gameOver;
+      state.youWin = youWin;
     },
     setFlag: (state, action) => {
       const { row, column } = action.payload;

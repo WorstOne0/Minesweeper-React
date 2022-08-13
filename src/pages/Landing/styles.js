@@ -10,6 +10,55 @@ export const Container = styled.div`
   align-items: center;
 `;
 
+export const GameModal = styled.div`
+  height: 100vh;
+  width: 100vw;
+  background: rgba(17, 25, 35, 0.3);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  position: absolute;
+  top: 0;
+
+  z-index: 1;
+`;
+
+export const GameDisplay = styled.div`
+  height: 30rem;
+  width: 100%;
+  background: rgba(11, 94, 205, 0.7);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  opacity: 1;
+`;
+
+export const GameTitle = styled.h1`
+  padding: 1.5rem 0;
+
+  color: #fff;
+  font-size: 6.4rem;
+
+  user-select: none;
+`;
+
+export const GameSubTitle = styled.h1`
+  color: #fff;
+  font-size: 1.8rem;
+
+  user-select: none;
+`;
+
+export const GameCondition = styled.div`
+  height: 30rem;
+`;
+
 export const SideBar = styled.div`
   height: 100%;
   width: 30rem;

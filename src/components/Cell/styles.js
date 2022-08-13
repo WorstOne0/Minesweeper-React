@@ -38,7 +38,7 @@ export const Content = styled.div`
   justify-content: center;
   align-items: center;
 
-  color: var(--color-primary);
+  color: ${(props) => props.color};
   font-weight: bold;
 
   user-select: none;
